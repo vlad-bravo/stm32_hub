@@ -15,9 +15,6 @@ void E_EraseChip(uint8_t * dat);
 void w_Write_0(uint8_t * dat);
 void W_Write_1(uint8_t * dat);
 
-void eePush(uint8_t volatile *);
-void wait_while_busy(void);
-
 #define CSN_LOW() HAL_GPIO_WritePin(GPIOA,GPIO_PIN_3,GPIO_PIN_RESET);	// NRF_SCN	bcf	_CSN
 #define CSN_HIGH() HAL_GPIO_WritePin(GPIOA,GPIO_PIN_3,GPIO_PIN_SET);	// NRF_SCN	bsf	_CSN
 #define CE_LOW() HAL_GPIO_WritePin(GPIOA,GPIO_PIN_4,GPIO_PIN_RESET);	// NRF_CE	bcf	_CE

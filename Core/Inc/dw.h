@@ -1,3 +1,6 @@
+void eePush(uint8_t volatile *);
+void wait_while_busy(void);
+
 #define WriteEnable	0x06
 #define WriteDisable	0x04
 #define ReadStatusReg1	0x05

@@ -25,6 +25,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "semphr.h"
 #include "gpio.h"
 #include "usart.h"
 #include "nrf.h"
@@ -525,11 +526,6 @@ void StartTaskFilter(void *argument)
       if(i>252)
       {
         eePush(dat);
-//        for(i=0; i<253; i++)
-//        {
-//          chr=dat[i];
-//          xQueueSend(serialQueueHandle, &chr, portMAX_DELAY);
-//        }
         i=0;
       }
     }

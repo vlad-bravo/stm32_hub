@@ -23,7 +23,7 @@ void wait_while_busy(void)
   } while(chr&0x01);
 }
 
-uint32_t read(uint16_t adr)
+uint32_t read_ts(uint16_t adr)
 {
   uint32_t ts=0;
   uint8_t chr;
@@ -46,7 +46,7 @@ uint32_t read(uint16_t adr)
   return ts;
 }
 
-void write(uint16_t adr, uint8_t volatile * dat)
+void write_page(uint16_t adr, uint8_t volatile * dat)
 {
   uint8_t i;
   
@@ -64,7 +64,7 @@ void write(uint16_t adr, uint8_t volatile * dat)
   DW_CS_HIGH();
 }
 
-void erase(uint16_t adr)
+void erase_block(uint16_t adr)
 {
   wait_while_busy();
   DW_CS_LOW();
@@ -81,42 +81,30 @@ void erase(uint16_t adr)
 
 void eePush(uint8_t volatile * dat)
 {
-  uint16_t nPage;	// (uint8_t) nPage>>8	// (uint8_t) nPage
+  uint16_t nPage;
   uint32_t ts, prev;
 
   if(xSemaphoreTake(myMutexDWHandle, portMAX_DELAY) == pdTRUE)
   {
-//msg(mStart);
-    ts = read(0xFFFF);
-//msg(m_ts); dump32(ts); crlf();
+    ts = read_ts(0xFFFF);
     if(ts==0xFFFFFFFF) ts=0;
-//msg(m_ts); dump32(ts); crlf();
     for(nPage = 0; nPage<=0xFFFF; nPage++)
     {
-//msg(m_nPage); dump16(nPage); crlf();
       prev = ts;
-      ts = read(nPage);
-//msg(m_ts); dump32(ts); crlf();
+      ts = read_ts(nPage);
       if(ts == 0xFFFFFFFF)
       {
-//msg(m_writePage); dump16(nPage); crlf();
-        write(nPage, dat);
+        write_page(nPage, dat);
         break;
       } else {
         if(ts < prev)
         {
-//msg(m_writePage); dump16(nPage); crlf();
-//msg(m_prev); dump32(prev); crlf();
-//msg(m_ts); dump32(ts); crlf();
-//msg(m_erasePage); dump16(nPage); crlf();
-          erase(nPage);
-//msg(m_writePage); dump16(nPage); crlf();
-          write(nPage, dat);
+          erase_block(nPage);
+          write_page(nPage, dat);
           break;
         }
       }
     }
-//msg(mEnd); crlf();
     xSemaphoreGive(myMutexDWHandle);
   }
 }
