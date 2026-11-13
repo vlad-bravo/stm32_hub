@@ -81,14 +81,14 @@ void erase_block(uint16_t adr)
 
 void eePush(uint8_t volatile * dat)
 {
-  uint16_t nPage;
+  static uint16_t nPage=0;
   uint32_t ts, prev;
 
   if(xSemaphoreTake(myMutexDWHandle, portMAX_DELAY) == pdTRUE)
   {
-    ts = read_ts(0xFFFF);
+    ts = read_ts(nPage++);
     if(ts==0xFFFFFFFF) ts=0;
-    for(nPage = 0; nPage<=0xFFFF; nPage++)
+    for(;;nPage++)
     {
       prev = ts;
       ts = read_ts(nPage);
