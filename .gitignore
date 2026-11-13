@@ -1,6 +1,5 @@
 Drivers/
 EWARM/
-Inc/
 Middlewares/
 .mxproject
 Src/gpio.c
@@ -11,3 +10,11 @@ Src/stm32f1xx_hal_timebase_tim.c
 Src/system_stm32f1xx.c
 Src/tim.c
 Src/usart.c
+Core/Inc/FreeRTOSConfig.h
+Core/Inc/gpio.h
+Core/Inc/i2c.h
+Core/Inc/rtc.h
+Core/Inc/spi.h
+Core/Inc/stm32f1xx_hal_conf.h
+Core/Inc/stm32f1xx_it.h
+Core/Inc/usart.h
