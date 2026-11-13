@@ -86,7 +86,7 @@ void eePush(uint8_t volatile * dat)
 
   if(xSemaphoreTake(myMutexDWHandle, portMAX_DELAY) == pdTRUE)
   {
-    ts = read_ts(nPage++);
+    ts = read_ts(nPage-1);
     if(ts==0xFFFFFFFF) ts=0;
     for(;;nPage++)
     {
